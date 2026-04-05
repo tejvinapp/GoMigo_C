@@ -1,0 +1,79 @@
+name: Database Backup
+
+on:
+  schedule:
+    - cron: '0 1 * * *' # 1 AM UTC = 6:30 AM IST
+  workflow_dispatch:
+    inputs:
+      reason:
+        description: 'Reason for manual backup'
+        required: false
+        default: 'Manual trigger'
+
+jobs:
+  backup:
+    name: Backup PostgreSQL Database
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Install PostgreSQL client
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y postgresql-client
+
+      - name: Create database backup
+        run: |
+          TIMESTAMP=$(date +%Y%m%d_%H%M%S)
+          BACKUP_FILE="gomigo_backup_${TIMESTAMP}.sql.gz"
+          echo "BACKUP_FILE=${BACKUP_FILE}" >> $GITHUB_ENV
+          pg_dump "$DATABASE_URL" | gzip > "${BACKUP_FILE}"
+          echo "Backup size: $(du -sh ${BACKUP_FILE} | cut -f1)"
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+
+      - name: Upload backup to Supabase Storage
+        run: |
+          curl -X POST \
+            "${SUPABASE_URL}/storage/v1/object/backups/${BACKUP_FILE}" \
+            -H "Authorization: Bearer ${SUPABASE_SERVICE_ROLE_KEY}" \
+            -H "Content-Type: application/gzip" \
+            -H "x-upsert: true" \
+            --data-binary "@${BACKUP_FILE}" \
+            --fail
+          echo "✅ Backup uploaded: ${BACKUP_FILE}"
+        env:
+          SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
+          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+
+      - name: Verify backup
+        run: |
+          RESPONSE=$(curl -s -o /dev/null -w "%{http_code}" \
+            "${SUPABASE_URL}/storage/v1/object/info/backups/${BACKUP_FILE}" \
+            -H "Authorization: Bearer ${SUPABASE_SERVICE_ROLE_KEY}")
+          if [ "$RESPONSE" = "200" ]; then
+            echo "✅ Backup verified in storage"
+          else
+            echo "❌ Backup verification failed (HTTP ${RESPONSE})"
+            exit 1
+          fi
+        env:
+          SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
+          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+
+      - name: Notify on success
+        if: success()
+        run: |
+          curl -s -X POST "$SLACK_WEBHOOK" \
+            -H 'Content-type: application/json' \
+            --data "{\"text\":\"✅ GoMiGo DB backup complete: \`${BACKUP_FILE}\`\"}" || true
+        env:
+          SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
+
+      - name: Notify on failure
+        if: failure()
+        run: |
+          curl -s -X POST "$SLACK_WEBHOOK" \
+            -H 'Content-type: application/json' \
+            --data '{"text":"❌ GoMiGo DB backup FAILED! Check GitHub Actions logs."}' || true
+        env:
+          SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}

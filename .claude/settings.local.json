@@ -1,0 +1,35 @@
+{
+  "permissions": {
+    "allow": [
+      "Read(//usr/local/**)",
+      "Read(//c/Users/Ravin/.nvm/versions/**)",
+      "Bash(cmd.exe /c \"where node npm npx\")",
+      "Bash(cmd.exe /c \"where node npm npx 2>&1\")",
+      "Bash(cmd.exe /c \"dir \"\"C:\\\\Program Files\\\\nodejs\"\" 2>&1 & dir \"\"C:\\\\Program Files \\(x86\\)\\\\nodejs\"\" 2>&1 & dir C:\\\\nodejs 2>&1\")",
+      "Bash(cmd.exe /c \"powershell -Command \"\"Get-Command node,npm,npx -ErrorAction SilentlyContinue | Format-List\"\" 2>&1\")",
+      "Bash(cmd.exe /c \"powershell -Command \"\"Get-ChildItem ''C:\\\\'' -Recurse -Filter ''node.exe'' -ErrorAction SilentlyContinue | Select-Object -First 5 FullName\"\" 2>&1\")",
+      "Bash(cmd.exe /c \"powershell -Command \"\"Invoke-WebRequest -Uri ''https://nodejs.org/dist/v20.15.0/node-v20.15.0-x64.msi'' -OutFile ''C:\\\\Users\\\\Ravin\\\\Downloads\\\\node-installer.msi'' -UseBasicParsing; Write-Output ''Download complete''\"\" 2>&1\")",
+      "Bash(cmd.exe /c \"powershell -Command \"\"$r = Invoke-WebRequest -Uri ''https://nodejs.org/dist/v20.15.0/node-v20.15.0-x64.msi'' -OutFile ''C:\\\\Users\\\\Ravin\\\\AppData\\\\Local\\\\Temp\\\\node-installer.msi'' -UseBasicParsing -ErrorAction Stop; Write-Host ''Done''\"\" 2>&1\")",
+      "Bash(cmd.exe /c \"curl --version 2>&1 & powershell -Command \"\"[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12; \\(New-Object System.Net.WebClient\\).DownloadFile\\(''https://nodejs.org/dist/v20.15.0/node-v20.15.0-x64.msi'',''C:\\\\Users\\\\Ravin\\\\AppData\\\\Local\\\\Temp\\\\node.msi''\\); Write-Host ''Downloaded''\"\" 2>&1\")",
+      "Bash(cmd.exe /c \"curl -L -o C:\\\\Users\\\\Ravin\\\\AppData\\\\Local\\\\Temp\\\\node.msi https://nodejs.org/dist/v20.15.0/node-v20.15.0-x64.msi 2>&1 && echo DONE\")",
+      "Bash(curl -L -o /tmp/node.msi https://nodejs.org/dist/v20.15.0/node-v20.15.0-x64.msi)",
+      "Bash(cp /tmp/node.msi /c/Users/Ravin/AppData/Local/Temp/node.msi)",
+      "Bash(cmd.exe /c \"msiexec /i C:\\\\Users\\\\Ravin\\\\AppData\\\\Local\\\\Temp\\\\node.msi /quiet /norestart ADDLOCAL=ALL 2>&1\")",
+      "Bash(cmd.exe /c \"msiexec /i C:\\\\Users\\\\Ravin\\\\AppData\\\\Local\\\\Temp\\\\node.msi /quiet /norestart ADDLOCAL=ALL\")",
+      "Bash(export PATH=\"/c/Program Files/nodejs:$PATH\")",
+      "Bash(npm --version)",
+      "Bash(npx --version)",
+      "Read(//c/Program Files/**)",
+      "Read(//c/Program Files \\(x86\\)/**)",
+      "Bash(cmd.exe /c \"where node 2>&1 & dir \"\"C:\\\\Program Files\\\\nodejs\"\" 2>&1\")",
+      "Bash(cmd.exe /c \"powershell -Command \"\"Get-ChildItem ''C:\\\\'' -Recurse -Filter ''node.exe'' -Depth 5 -ErrorAction SilentlyContinue | Select-Object FullName\"\"\")",
+      "Bash(unzip -o /tmp/node.zip -d /tmp/nodejs_extract/)",
+      "Bash(/tmp/nodejs_extract/node-v20.15.0-win-x64/node.exe --version)",
+      "Bash(export PATH=\"/tmp/nodejs_extract/node-v20.15.0-win-x64:$PATH\")",
+      "Bash(export PATH=\"/tmp/nodejs_extract/node-v20.15.0-win-x64:$PATH\" cd /d/GoMiGo npm install --legacy-peer-deps)",
+      "Bash(find D:/GoMiGo/messages D:/GoMiGo/supabase/functions D:/GoMiGo/public D:/GoMiGo/src/app/api/destinations D:/GoMiGo/src/app/api/reviews D:/GoMiGo/src/app/api/providers D:/GoMiGo/src/app/api/admin D:/GoMiGo/src/app/api/bookings/[id] D:/GoMiGo/.env.example D:/GoMiGo/supabase/config.toml D:/GoMiGo/supabase/seed.ts D:/GoMiGo/tests/e2e D:/GoMiGo/tests/unit -type f)",
+      "Bash(find D:/GoMiGo/messages D:/GoMiGo/supabase/functions/activate-destination D:/GoMiGo/src/app/api/destinations D:/GoMiGo/src/app/api/reviews D:/GoMiGo/src/app/api/providers D:/GoMiGo/src/app/api/admin D:/GoMiGo/src/app/api/bookings/[id] D:/GoMiGo/supabase/seed.ts D:/GoMiGo/supabase/migrations/004_seed_templates.sql D:/GoMiGo/tests/e2e/driver-onboarding.spec.ts D:/GoMiGo/tests/e2e/offline-booking.spec.ts D:/GoMiGo/tests/e2e/destination-activation.spec.ts D:/GoMiGo/tests/unit/appError.test.ts -type f)",
+      "Bash(find D:/GoMiGo/messages D:/GoMiGo/src/app/api/providers D:/GoMiGo/src/app/api/admin D:/GoMiGo/src/app/api/bookings/[id] D:/GoMiGo/supabase/seed.ts D:/GoMiGo/supabase/migrations/004_seed_templates.sql D:/GoMiGo/tests/e2e/driver-onboarding.spec.ts D:/GoMiGo/tests/e2e/offline-booking.spec.ts D:/GoMiGo/tests/e2e/destination-activation.spec.ts D:/GoMiGo/tests/unit/appError.test.ts -type f)"
+    ]
+  }
+}

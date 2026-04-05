@@ -1,0 +1,91 @@
+name: Uptime Monitor
+
+on:
+  schedule:
+    - cron: '*/15 * * * *' # Every 15 minutes
+  workflow_dispatch:
+
+jobs:
+  health-check:
+    name: Check GoMiGo Health
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check /api/health endpoint
+        id: health
+        run: |
+          RESPONSE=$(curl -s -o /tmp/health_response.json -w "%{http_code}" \
+            --max-time 15 \
+            "${APP_URL}/api/health")
+          echo "status_code=${RESPONSE}" >> $GITHUB_OUTPUT
+          echo "HTTP Status: ${RESPONSE}"
+          cat /tmp/health_response.json || true
+          if [ "$RESPONSE" != "200" ]; then
+            echo "❌ Health check failed with status ${RESPONSE}"
+            exit 1
+          fi
+          echo "✅ Health check passed"
+        env:
+          APP_URL: ${{ secrets.APP_URL }}
+
+      - name: Check /api/health/db endpoint
+        id: db-health
+        run: |
+          RESPONSE=$(curl -s -o /tmp/db_response.json -w "%{http_code}" \
+            --max-time 15 \
+            "${APP_URL}/api/health/db")
+          echo "status_code=${RESPONSE}" >> $GITHUB_OUTPUT
+          cat /tmp/db_response.json || true
+          if [ "$RESPONSE" != "200" ]; then
+            echo "❌ DB health check failed with status ${RESPONSE}"
+            exit 1
+          fi
+          echo "✅ DB health check passed"
+        env:
+          APP_URL: ${{ secrets.APP_URL }}
+
+      - name: Check homepage loads
+        run: |
+          RESPONSE=$(curl -s -o /dev/null -w "%{http_code}" \
+            --max-time 20 \
+            "${APP_URL}/")
+          if [ "$RESPONSE" != "200" ]; then
+            echo "❌ Homepage returned ${RESPONSE}"
+            exit 1
+          fi
+          echo "✅ Homepage OK (${RESPONSE})"
+        env:
+          APP_URL: ${{ secrets.APP_URL }}
+
+      - name: Notify on failure
+        if: failure()
+        run: |
+          # Slack notification
+          if [ -n "$SLACK_WEBHOOK" ]; then
+            curl -s -X POST "$SLACK_WEBHOOK" \
+              -H 'Content-type: application/json' \
+              --data "{
+                \"text\": \"🚨 *GoMiGo DOWN!*\",
+                \"attachments\": [{
+                  \"color\": \"danger\",
+                  \"fields\": [
+                    {\"title\": \"URL\", \"value\": \"${APP_URL}\", \"short\": true},
+                    {\"title\": \"Time\", \"value\": \"$(date -u +%Y-%m-%dT%H:%M:%SZ)\", \"short\": true},
+                    {\"title\": \"Action\", \"value\": \"<${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|View Logs>\"}
+                  ]
+                }]
+              }" || true
+          fi
+
+          # WhatsApp alert to admin (via GoMiGo API)
+          if [ -n "$ADMIN_PHONE" ]; then
+            curl -s -X POST "${APP_URL}/api/admin/alert" \
+              -H "Authorization: Bearer ${ADMIN_ALERT_TOKEN}" \
+              -H "Content-Type: application/json" \
+              --data "{\"message\": \"GoMiGo health check failed at $(date -u)\"}" || true
+          fi
+        env:
+          SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
+          APP_URL: ${{ secrets.APP_URL }}
+          ADMIN_PHONE: ${{ secrets.ADMIN_PHONE }}
+          ADMIN_ALERT_TOKEN: ${{ secrets.ADMIN_ALERT_TOKEN }}

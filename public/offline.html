@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#16a34a" />
+  <title>GoMiGo — You're Offline</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --green:       #16a34a;
+      --green-dark:  #15803d;
+      --green-light: #dcfce7;
+      --gray-50:     #f9fafb;
+      --gray-100:    #f3f4f6;
+      --gray-300:    #d1d5db;
+      --gray-500:    #6b7280;
+      --gray-600:    #4b5563;
+      --gray-700:    #374151;
+      --gray-800:    #1f2937;
+      --white:       #ffffff;
+    }
+
+    html, body {
+      height: 100%;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
+                   'Helvetica Neue', Arial, 'Noto Sans', sans-serif;
+      background: var(--gray-50);
+      color: var(--gray-800);
+    }
+
+    /* ── Header ──────────────────────────────────────────────────── */
+    header {
+      background: var(--green);
+      color: var(--white);
+      padding: 0 1.25rem;
+      height: 56px;
+      display: flex;
+      align-items: center;
+      gap: 0.625rem;
+      box-shadow: 0 1px 4px rgba(0,0,0,.15);
+    }
+
+    .logo-mark {
+      width: 32px;
+      height: 32px;
+      background: var(--white);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .logo-mark svg { width: 20px; height: 20px; }
+
+    .logo-text {
+      font-size: 1.125rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+    }
+
+    /* ── Main ────────────────────────────────────────────────────── */
+    main {
+      min-height: calc(100vh - 56px);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      padding: 2.5rem 1.25rem 3rem;
+    }
+
+    /* ── Hero card ───────────────────────────────────────────────── */
+    .card {
+      background: var(--white);
+      border-radius: 16px;
+      box-shadow: 0 1px 3px rgba(0,0,0,.08), 0 8px 24px rgba(0,0,0,.06);
+      max-width: 420px;
+      width: 100%;
+      padding: 2rem 1.75rem;
+      text-align: center;
+    }
+
+    /* WiFi-off SVG icon */
+    .wifi-icon {
+      width: 64px;
+      height: 64px;
+      margin: 0 auto 1.25rem;
+      background: var(--green-light);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .wifi-icon svg {
+      width: 34px;
+      height: 34px;
+      color: var(--green);
+      stroke: var(--green);
+    }
+
+    .headline {
+      font-size: 1.5rem;
+      font-weight: 800;
+      color: var(--gray-800);
+      margin-bottom: 0.5rem;
+      line-height: 1.25;
+    }
+
+    /* ── Multilingual subtitle ───────────────────────────────────── */
+    .lang-block {
+      display: flex;
+      flex-direction: column;
+      gap: 0.25rem;
+      margin-bottom: 1.75rem;
+    }
+
+    .lang-line {
+      font-size: 0.875rem;
+      color: var(--gray-500);
+      line-height: 1.5;
+    }
+
+    .lang-label {
+      font-size: 0.7rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--gray-300);
+      margin-bottom: 0.1rem;
+    }
+
+    .lang-sep {
+      width: 2rem;
+      height: 1px;
+      background: var(--gray-100);
+      margin: 0.4rem auto;
+    }
+
+    /* ── Works-offline list ──────────────────────────────────────── */
+    .works-offline {
+      background: var(--gray-50);
+      border: 1px solid var(--gray-100);
+      border-radius: 12px;
+      padding: 1rem 1.25rem;
+      text-align: left;
+      margin-bottom: 1.75rem;
+    }
+
+    .works-offline h3 {
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--gray-500);
+      margin-bottom: 0.75rem;
+    }
+
+    .works-offline ul {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .works-offline li {
+      display: flex;
+      align-items: center;
+      gap: 0.625rem;
+      font-size: 0.875rem;
+      color: var(--gray-700);
+    }
+
+    .check-icon {
+      flex-shrink: 0;
+      width: 18px;
+      height: 18px;
+      background: var(--green-light);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .check-icon svg {
+      width: 11px;
+      height: 11px;
+      stroke: var(--green-dark);
+      stroke-width: 2.5;
+    }
+
+    /* ── Retry button ────────────────────────────────────────────── */
+    .retry-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: var(--green);
+      color: var(--white);
+      border: none;
+      border-radius: 12px;
+      padding: 0.75rem 1.75rem;
+      font-size: 0.9375rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: background 0.15s ease, transform 0.1s ease;
+      width: 100%;
+      justify-content: center;
+    }
+
+    .retry-btn:hover  { background: var(--green-dark); }
+    .retry-btn:active { transform: scale(0.97); }
+
+    .retry-btn svg {
+      width: 18px;
+      height: 18px;
+      stroke: currentColor;
+      stroke-width: 2.2;
+    }
+
+    /* ── Footer ──────────────────────────────────────────────────── */
+    footer {
+      margin-top: 2rem;
+      text-align: center;
+      font-size: 0.75rem;
+      color: var(--gray-300);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ── Header ──────────────────────────────────────────────── -->
+  <header>
+    <div class="logo-mark" aria-hidden="true">
+      <!-- Mountain / travel icon -->
+      <svg viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M2 16 L7 8 L10 12 L13 7 L18 16 Z" fill="#16a34a" />
+        <circle cx="15" cy="5" r="2" fill="#16a34a"/>
+      </svg>
+    </div>
+    <span class="logo-text">GoMiGo</span>
+  </header>
+
+  <!-- ── Main content ─────────────────────────────────────────── -->
+  <main>
+    <div class="card">
+
+      <!-- WiFi-off icon -->
+      <div class="wifi-icon" role="img" aria-label="No WiFi signal">
+        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"
+             stroke-linecap="round" stroke-linejoin="round">
+          <line x1="2" y1="2" x2="22" y2="22"/>
+          <path d="M8.5 16.5a5 5 0 0 1 7 0"/>
+          <path d="M5 12.5a9 9 0 0 1 4.5-2.4"/>
+          <path d="M14.5 10.1A9 9 0 0 1 19 12.5"/>
+          <path d="M2 8.82A15 15 0 0 1 7.2 6"/>
+          <path d="M16.8 6A15 15 0 0 1 22 8.82"/>
+          <line x1="12" y1="20" x2="12.01" y2="20" stroke-width="3"/>
+        </svg>
+      </div>
+
+      <!-- English headline -->
+      <h1 class="headline">You're offline</h1>
+
+      <!-- 3-language message block -->
+      <div class="lang-block">
+        <p class="lang-line">
+          Please check your internet connection and try again.
+        </p>
+
+        <div class="lang-sep"></div>
+
+        <!-- Hindi -->
+        <p class="lang-label">हिंदी में</p>
+        <p class="lang-line" lang="hi">
+          कृपया अपना इंटरनेट कनेक्शन जांचें और पुनः प्रयास करें।
+        </p>
+
+        <div class="lang-sep"></div>
+
+        <!-- Tamil -->
+        <p class="lang-label">தமிழில்</p>
+        <p class="lang-line" lang="ta">
+          தயவுசெய்து உங்கள் இணைய இணைப்பை சரிபார்த்து மீண்டும் முயற்சிக்கவும்.
+        </p>
+      </div>
+
+      <!-- What works offline -->
+      <div class="works-offline">
+        <h3>Works offline</h3>
+        <ul>
+          <li>
+            <span class="check-icon" aria-hidden="true">
+              <svg viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </span>
+            View saved listings
+          </li>
+          <li>
+            <span class="check-icon" aria-hidden="true">
+              <svg viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </span>
+            Your recent trips
+          </li>
+          <li>
+            <span class="check-icon" aria-hidden="true">
+              <svg viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </span>
+            Emergency contacts
+          </li>
+        </ul>
+      </div>
+
+      <!-- Retry button -->
+      <button class="retry-btn" onclick="window.location.reload()" type="button">
+        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"
+             stroke-linecap="round" stroke-linejoin="round">
+          <path d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
+        </svg>
+        Retry Connection
+      </button>
+
+    </div><!-- /.card -->
+
+    <footer>GoMiGo &mdash; Hill Station Travel &bull; &copy; 2024</footer>
+  </main>
+
+</body>
+</html>
