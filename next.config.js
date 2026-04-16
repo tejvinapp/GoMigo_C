@@ -73,13 +73,7 @@ const nextConfig = {
     ]
   },
   async redirects() {
-    return [
-      {
-        source: '/admin',
-        destination: '/admin/dashboard',
-        permanent: false,
-      },
-    ]
+    return []
   },
   experimental: {
     serverComponentsExternalPackages: ['@react-pdf/renderer'],
