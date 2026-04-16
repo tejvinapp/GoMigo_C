@@ -29,7 +29,27 @@
       "Bash(export PATH=\"/tmp/nodejs_extract/node-v20.15.0-win-x64:$PATH\" cd /d/GoMiGo npm install --legacy-peer-deps)",
       "Bash(find D:/GoMiGo/messages D:/GoMiGo/supabase/functions D:/GoMiGo/public D:/GoMiGo/src/app/api/destinations D:/GoMiGo/src/app/api/reviews D:/GoMiGo/src/app/api/providers D:/GoMiGo/src/app/api/admin D:/GoMiGo/src/app/api/bookings/[id] D:/GoMiGo/.env.example D:/GoMiGo/supabase/config.toml D:/GoMiGo/supabase/seed.ts D:/GoMiGo/tests/e2e D:/GoMiGo/tests/unit -type f)",
       "Bash(find D:/GoMiGo/messages D:/GoMiGo/supabase/functions/activate-destination D:/GoMiGo/src/app/api/destinations D:/GoMiGo/src/app/api/reviews D:/GoMiGo/src/app/api/providers D:/GoMiGo/src/app/api/admin D:/GoMiGo/src/app/api/bookings/[id] D:/GoMiGo/supabase/seed.ts D:/GoMiGo/supabase/migrations/004_seed_templates.sql D:/GoMiGo/tests/e2e/driver-onboarding.spec.ts D:/GoMiGo/tests/e2e/offline-booking.spec.ts D:/GoMiGo/tests/e2e/destination-activation.spec.ts D:/GoMiGo/tests/unit/appError.test.ts -type f)",
-      "Bash(find D:/GoMiGo/messages D:/GoMiGo/src/app/api/providers D:/GoMiGo/src/app/api/admin D:/GoMiGo/src/app/api/bookings/[id] D:/GoMiGo/supabase/seed.ts D:/GoMiGo/supabase/migrations/004_seed_templates.sql D:/GoMiGo/tests/e2e/driver-onboarding.spec.ts D:/GoMiGo/tests/e2e/offline-booking.spec.ts D:/GoMiGo/tests/e2e/destination-activation.spec.ts D:/GoMiGo/tests/unit/appError.test.ts -type f)"
+      "Bash(find D:/GoMiGo/messages D:/GoMiGo/src/app/api/providers D:/GoMiGo/src/app/api/admin D:/GoMiGo/src/app/api/bookings/[id] D:/GoMiGo/supabase/seed.ts D:/GoMiGo/supabase/migrations/004_seed_templates.sql D:/GoMiGo/tests/e2e/driver-onboarding.spec.ts D:/GoMiGo/tests/e2e/offline-booking.spec.ts D:/GoMiGo/tests/e2e/destination-activation.spec.ts D:/GoMiGo/tests/unit/appError.test.ts -type f)",
+      "Bash(git add:*)",
+      "Bash(git commit:*)",
+      "Bash(git push:*)",
+      "Bash(git -C \"D:\\\\GoMiGo\" push origin main)",
+      "Bash(git -C \"D:\\\\GoMiGo\" log --oneline -3)",
+      "Bash(npx vercel:*)",
+      "Bash(cmd.exe /c \"npx vercel --version\")",
+      "Bash(cmd.exe /c \"where node && where npx\")",
+      "Bash(powershell.exe -Command \"where.exe node; where.exe npx\")",
+      "Bash(powershell.exe -Command \"Get-Command node -ErrorAction SilentlyContinue | Select-Object -ExpandProperty Source; ls ''C:\\\\Program Files\\\\nodejs\\\\'' 2>$null | Select-Object -First 5\")",
+      "Bash(powershell.exe -Command \"Test-Path ''C:\\\\Program Files\\\\nodejs\\\\node.exe''\")",
+      "Bash(powershell.exe -Command \"Get-ChildItem -Path ''D:\\\\GoMiGo\\\\app'' -Filter ''page.tsx'' -Recurse | Select-Object FullName\")",
+      "Bash(powershell.exe -Command \"dir ''D:\\\\GoMiGo\\\\app'' -Recurse -Filter page.tsx | Select FullName | Format-List\")",
+      "Bash(powershell.exe -Command \"Get-ChildItem ''D:\\\\GoMiGo\\\\app'' | Select-Object Name, Mode\")",
+      "Bash(powershell.exe -Command \"Get-ChildItem ''D:\\\\GoMiGo'' | Select-Object Name, Mode\")",
+      "Bash(powershell.exe -Command \"Get-ChildItem ''D:\\\\GoMiGo\\\\src'' -Recurse -Filter ''page.tsx'' | Select-Object FullName\")",
+      "Bash(powershell.exe -Command \":*)",
+      "Bash(powershell.exe -Command \"Get-ChildItem ''D:\\\\GoMiGo\\\\src\\\\app\\\\\\(admin\\)'' -Recurse | Select-Object FullName\")",
+      "Bash(git -C \"D:\\\\GoMiGo\" add -A)",
+      "Bash(git -C \"D:\\\\GoMiGo\" commit -m \"fix: move admin pages to /admin/* to resolve route group conflict:*)"
     ]
   }
 }
