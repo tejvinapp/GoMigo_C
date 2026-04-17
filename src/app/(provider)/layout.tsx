@@ -18,10 +18,12 @@ const NAV_LINKS = [
   { href: '/settings', label: 'Settings', icon: Settings },
 ]
 
-const TIER_COLORS: Record<string, string> = {
-  free: 'bg-gray-100 text-gray-600',
-  basic: 'bg-blue-100 text-blue-700',
-  pro: 'bg-yellow-100 text-yellow-700',
+const PLAN_COLORS: Record<string, string> = {
+  trial: 'bg-gray-100 text-gray-600',
+  active: 'bg-blue-100 text-blue-700',
+  driver_featured: 'bg-yellow-100 text-yellow-700',
+  hotel_large: 'bg-yellow-100 text-yellow-700',
+  guide_agency: 'bg-yellow-100 text-yellow-700',
 }
 
 export default async function ProviderLayout({ children }: { children: React.ReactNode }) {
@@ -34,34 +36,29 @@ export default async function ProviderLayout({ children }: { children: React.Rea
     redirect('/login')
   }
 
-  // Check provider role
-  const { data: roleRow } = await supabase
-    .from('user_roles')
-    .select('role')
+  // Check that this user has a provider profile
+  const { data: profile } = await supabase
+    .from('provider_profiles')
+    .select('id, display_name, profile_photo_url')
     .eq('user_id', user.id)
-    .eq('role', 'provider')
     .maybeSingle()
 
-  if (!roleRow) {
+  if (!profile) {
     redirect('/')
   }
 
-  // Fetch provider profile + subscription
-  const { data: profile } = await supabase
-    .from('provider_profiles')
-    .select(
-      `display_name, profile_photo_url,
-       subscriptions!inner (tier, expires_at)`
-    )
-    .eq('user_id', user.id)
+  // Fetch active subscription separately
+  const { data: sub } = await supabase
+    .from('subscriptions')
+    .select('plan, status, trial_ends_at')
+    .eq('provider_id', (profile as unknown as { id: string }).id)
+    .order('created_at', { ascending: false })
+    .limit(1)
     .maybeSingle()
 
-  const displayName = profile?.display_name || 'Provider'
-  const rawSub = Array.isArray(profile?.subscriptions)
-    ? profile.subscriptions[0]
-    : profile?.subscriptions
-  const sub = (rawSub as unknown as { tier: string; expires_at: string } | null) ?? null
-  const tier = (sub?.tier as string) || 'free'
+  const displayName = (profile as unknown as { display_name: string }).display_name || 'Provider'
+  const plan = (sub as unknown as { plan?: string } | null)?.plan || 'trial'
+  const planLabel = plan.split('_').map((w: string) => w.charAt(0).toUpperCase() + w.slice(1)).join(' ')
 
   return (
     <div className="flex min-h-screen bg-gray-50">
@@ -102,10 +99,10 @@ export default async function ProviderLayout({ children }: { children: React.Rea
               <p className="text-sm font-semibold text-gray-800 truncate">{displayName}</p>
               <span
                 className={`inline-block text-[10px] font-bold uppercase px-1.5 py-0.5 rounded-full mt-0.5 ${
-                  TIER_COLORS[tier] || TIER_COLORS.free
+                  PLAN_COLORS[plan] || PLAN_COLORS.trial
                 }`}
               >
-                {tier}
+                {planLabel}
               </span>
             </div>
           </div>

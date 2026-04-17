@@ -63,7 +63,7 @@ export default function LoginPage() {
     if (verifyError) {
       setError(verifyError.message.includes('expired') ? 'OTP expired. Request a new one.' : 'Wrong OTP. Check WhatsApp.')
     } else {
-      router.push('/dashboard')
+      router.push('/')
     }
   }
 
