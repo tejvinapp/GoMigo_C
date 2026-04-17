@@ -54,7 +54,14 @@
       "Bash(git -C \"D:\\\\GoMiGo\" add tsconfig.json next.config.js)",
       "Bash(git -C \"D:\\\\GoMiGo\" commit -m \"fix: correct @/* path alias to src/* and remove invalid redirect\")",
       "Bash(powershell.exe -Command \"Get-ChildItem ''D:\\\\GoMiGo\\\\src'' -Recurse -Include ''*.ts'',''*.tsx'' | Select-String ''@/src/'' | Select-Object -ExpandProperty Path | Sort-Object -Unique\")",
-      "Bash(git -C \"D:\\\\GoMiGo\" commit -m \"fix: replace all @/src/* imports with @/* across all source files\")"
+      "Bash(git -C \"D:\\\\GoMiGo\" commit -m \"fix: replace all @/src/* imports with @/* across all source files\")",
+      "Bash(powershell.exe -Command \"Get-ChildItem ''D:\\\\GoMiGo\\\\src'' -Recurse -Include ''*.ts'',''*.tsx'' | Select-String \"\"@/lib/utils''\"\" | Select-Object Path,LineNumber,Line | Select-Object -First 10\")",
+      "Bash(powershell.exe -Command \"Get-ChildItem ''D:\\\\GoMiGo\\\\src'' -Recurse -Include ''*.ts'',''*.tsx'' | Select-String \"\"ProfileClient\"\" | Select-Object Path,Line\")",
+      "Bash(powershell.exe -Command \"Get-ChildItem ''D:\\\\GoMiGo\\\\src'' -Recurse -Include ''*.ts'',''*.tsx'' | Select-String \"\"@/lib/email\"\" | Select-Object Path,Line | Select-Object -First 10\")",
+      "Bash(powershell.exe -Command \"Select-String ''ProfileClient'' ''D:\\\\GoMiGo\\\\src\\\\app\\\\\\(tourist\\)\\\\profile\\\\page.tsx'' | Select-Object Line\")",
+      "Bash(powershell.exe -Command \"[System.IO.File]::ReadAllText\\(''D:\\\\GoMiGo\\\\src\\\\app\\\\\\(tourist\\)\\\\profile\\\\page.tsx''\\) | Select-String -Pattern ''ProfileClient'' -AllMatches | ForEach-Object { $_.Matches }\")",
+      "Bash(powershell.exe -Command \"[System.IO.File]::ReadAllText\\(''''D:\\\\GoMiGo\\\\package.json''''\\)\")",
+      "Bash(git -C \"D:\\\\GoMiGo\" commit -m \"fix: add missing lib/utils.ts, lib/email/index.ts, components/ProfileClient.tsx\")"
     ]
   }
 }
