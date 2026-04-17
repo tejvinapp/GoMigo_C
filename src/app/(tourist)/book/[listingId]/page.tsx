@@ -118,7 +118,7 @@ export default async function BookingPage({ params }: Props) {
           <div className="lg:col-span-3">
             <BookingForm
               listingId={listing.id}
-              listingType={listing.listing_type as 'cab' | 'auto' | 'hotel_room' | 'tour'}
+              listingType={(listing.listing_type === 'hotel_room' ? 'hotel' : listing.listing_type === 'tour' ? 'guide' : listing.listing_type) as 'cab' | 'auto' | 'hotel' | 'guide'}
               basePricePaise={listing.base_price_paise as number}
               demandMultiplier={listing.demand_multiplier as number}
               platformFeePercent={(listing.platform_fee_percent as number) ?? 10}
