@@ -50,12 +50,27 @@ interface ListingRow {
 async function getListings(dbType: string, destinationSlug: string) {
   const admin = createAdminClient()
 
-  // First, resolve the destination (handles both main slug and sub-destination names)
-  const { data: dest } = await admin
+  // First, resolve the destination by slug
+  // Also handle sub-destinations (e.g., /cabs/ooty where ooty is a sub-destination of nilgiris)
+  let { data: dest } = await admin
     .from('destinations')
     .select('id, region_name, slug, sub_destinations')
+    .eq('slug', destinationSlug)
     .eq('is_active', true)
-    .single()
+    .maybeSingle()
+
+  // If not found by direct slug, search sub_destinations array
+  if (!dest) {
+    const { data: allDests } = await admin
+      .from('destinations')
+      .select('id, region_name, slug, sub_destinations')
+      .eq('is_active', true)
+    dest = allDests?.find((d) =>
+      (d.sub_destinations as string[] || []).some(
+        (s) => s.toLowerCase() === destinationSlug.toLowerCase()
+      )
+    ) || allDests?.[0] || null
+  }
 
   if (!dest) return { listings: [], destination: null }
 

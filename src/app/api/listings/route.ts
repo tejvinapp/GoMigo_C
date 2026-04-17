@@ -1,7 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server'
+import { createClient } from '@/lib/supabase/server'
 import { createAdminClient } from '@/lib/supabase/admin'
 import { applySeasonalPricing } from '@/lib/utils/seasonal'
 import { applyDemandMultiplier } from '@/lib/utils/currency'
+import { AppError } from '@/lib/errors/AppError'
 
 export const dynamic = 'force-dynamic'
 
@@ -105,4 +107,111 @@ export async function GET(request: NextRequest) {
     console.error('Listings API error:', err)
     return NextResponse.json({ error: true, message: 'Failed to fetch listings' }, { status: 500 })
   }
+}
+
+// POST /api/listings — create a new listing (provider only)
+export async function POST(request: NextRequest) {
+  const supabase = createClient()
+  const {
+    data: { user },
+  } = await supabase.auth.getUser()
+
+  if (!user) {
+    return NextResponse.json(
+      new AppError('ERR_AUTH_SESSION_EXPIRED').toUserResponse(),
+      { status: 401 }
+    )
+  }
+
+  const admin = createAdminClient()
+
+  // Get provider profile
+  const { data: provider } = await admin
+    .from('provider_profiles')
+    .select('id')
+    .eq('user_id', user.id)
+    .single()
+
+  if (!provider) {
+    return NextResponse.json(
+      { error: true, message: 'Provider profile not found' },
+      { status: 403 }
+    )
+  }
+
+  let body: Record<string, unknown>
+  try {
+    body = await request.json()
+  } catch {
+    return NextResponse.json({ error: true, message: 'Invalid JSON' }, { status: 400 })
+  }
+
+  const { serviceType, description, locationName, photos = [], ...rest } = body
+
+  // Map form serviceType to DB listing_type
+  const listingTypeMap: Record<string, string> = {
+    cab: 'cab',
+    auto: 'auto',
+    hotel: 'hotel_room',
+    guide: 'tour',
+  }
+  const listingType = listingTypeMap[serviceType as string]
+  if (!listingType) {
+    return NextResponse.json({ error: true, message: 'Invalid service type' }, { status: 400 })
+  }
+
+  // Get first active destination (default to Nilgiris for now)
+  const { data: destination } = await admin
+    .from('destinations')
+    .select('id')
+    .eq('is_active', true)
+    .limit(1)
+    .single()
+
+  if (!destination) {
+    return NextResponse.json({ error: true, message: 'No active destination found' }, { status: 400 })
+  }
+
+  // Calculate base price based on type
+  let basePricePaise = 150000 // default ₹1500
+  if (listingType === 'cab' || listingType === 'auto') {
+    basePricePaise = ((rest.basePricePerKmPaise as number) || 1500) * 20 // assume 20km avg trip
+  } else if (listingType === 'tour') {
+    basePricePaise = (rest.dailyRatePaise as number) || 150000
+  } else if (listingType === 'hotel_room') {
+    const rooms = (rest.roomTypes as Array<{ pricePaise: number }>) || []
+    basePricePaise = rooms[0]?.pricePaise || 200000
+  }
+
+  const { data: listing, error } = await admin
+    .from('listings')
+    .insert({
+      provider_id: provider.id,
+      destination_id: destination.id,
+      listing_type: listingType,
+      title_en: (rest.propertyName as string) ||
+        (rest.vehicleModel ? `${rest.vehicleModel} (${rest.vehicleNumber || ''})` : null) ||
+        `${serviceType} Service`,
+      description_en: description as string,
+      base_price_paise: basePricePaise,
+      location_name_en: locationName as string,
+      cover_photo_url: (photos as string[])[0] || null,
+      photo_urls: (photos as string[]).slice(1),
+      amenities: (rest.amenities as string[]) || [],
+      vehicle_type: (rest.vehicleModel as string) || null,
+      vehicle_number: (rest.vehicleNumber as string) || null,
+      seat_capacity: (rest.capacity as number) || null,
+      listing_visible: false, // requires admin approval
+      created_at: new Date().toISOString(),
+      updated_at: new Date().toISOString(),
+    })
+    .select('id, booking_reference:id')
+    .single()
+
+  if (error) {
+    console.error('Create listing error:', error)
+    return NextResponse.json({ error: true, message: 'Failed to create listing' }, { status: 500 })
+  }
+
+  return NextResponse.json({ success: true, data: { id: listing.id } }, { status: 201 })
 }

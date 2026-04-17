@@ -124,7 +124,8 @@ export default async function BookingPage({ params }: Props) {
             <h1 className="text-2xl font-bold text-gray-900 mb-6">Complete Your Booking</h1>
             <BookingForm
               listingId={l.id}
-              bookingType={bookingType}
+              listingType={bookingType}
+              basePricePaise={displayPrice}
             />
           </div>
 

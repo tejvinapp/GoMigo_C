@@ -165,7 +165,7 @@ export default function ProviderSettingsPage() {
 
       const { data: p } = await supabase
         .from('provider_profiles')
-        .select('id, display_name, bio, profile_photo_url')
+        .select('id, display_name, bio_en, profile_photo_url')
         .eq('user_id', user.id)
         .single()
 
@@ -178,43 +178,31 @@ export default function ProviderSettingsPage() {
       if (p) {
         setProfile({
           display_name: p.display_name || '',
-          bio: p.bio || '',
+          bio: (p as unknown as { bio_en?: string }).bio_en || '',
           phone: u?.phone || '',
           profile_photo_url: p.profile_photo_url,
           provider_id: p.id,
         })
 
-        const { data: k } = await supabase
+        // Fetch KYC docs — schema uses doc_type + file_url (one row per document)
+        const { data: kycDocs } = await supabase
           .from('kyc_documents')
-          .select('status, rejection_reason, aadhaar_doc_url, vehicle_rc_url')
+          .select('doc_type, file_url, status, rejection_reason')
           .eq('provider_id', p.id)
-          .maybeSingle()
 
-        if (k) {
+        if (kycDocs && kycDocs.length > 0) {
+          const aadhaar = kycDocs.find((d) => d.doc_type === 'aadhaar')
+          const vehicleRc = kycDocs.find((d) => d.doc_type === 'vehicle_rc')
+          // Use the most recent status (aadhaar takes priority)
+          const primaryDoc = aadhaar || kycDocs[0]
           setKyc({
-            status: k.status as KYCData['status'],
-            rejection_reason: k.rejection_reason,
-            aadhaar_doc_url: k.aadhaar_doc_url,
-            vehicle_rc_url: k.vehicle_rc_url,
+            status: primaryDoc.status as KYCData['status'],
+            rejection_reason: primaryDoc.rejection_reason,
+            aadhaar_doc_url: aadhaar?.file_url || null,
+            vehicle_rc_url: vehicleRc?.file_url || null,
           })
         }
-
-        const { data: np } = await supabase
-          .from('notification_preferences')
-          .select('*')
-          .eq('provider_id', p.id)
-          .maybeSingle()
-
-        if (np) {
-          setNotifPrefs({
-            whatsapp_new_booking: np.whatsapp_new_booking ?? true,
-            whatsapp_booking_update: np.whatsapp_booking_update ?? true,
-            whatsapp_payment: np.whatsapp_payment ?? true,
-            email_new_booking: np.email_new_booking ?? false,
-            email_booking_update: np.email_booking_update ?? false,
-            email_payment: np.email_payment ?? true,
-          })
-        }
+        // notification_preferences table does not exist — using UI defaults only
       }
     }
     load()

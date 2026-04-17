@@ -95,7 +95,7 @@ export default async function ProviderDashboardPage() {
 
     supabase
       .from('subscriptions')
-      .select('tier, expires_at, status')
+      .select('plan, status, trial_ends_at, current_period_end')
       .eq('provider_id', providerId)
       .order('created_at', { ascending: false })
       .limit(1)
@@ -103,8 +103,8 @@ export default async function ProviderDashboardPage() {
 
     supabase
       .from('notifications')
-      .select('id, title, body, is_read, created_at')
-      .eq('user_id', user.id)
+      .select('id, template_name, channel, status, created_at')
+      .eq('recipient_id', user.id)
       .order('created_at', { ascending: false })
       .limit(5),
   ])
@@ -114,9 +114,10 @@ export default async function ProviderDashboardPage() {
     0
   )
 
-  const tierLabel = subscription?.tier || 'free'
-  const expiryDate = subscription?.expires_at
-    ? format(new Date(subscription.expires_at), 'dd MMM yyyy')
+  const tierLabel = subscription?.plan || 'free'
+  const expiryEnd = subscription?.current_period_end || subscription?.trial_ends_at
+  const expiryDate = expiryEnd
+    ? format(new Date(expiryEnd), 'dd MMM yyyy')
     : 'No expiry'
 
   return (
@@ -309,12 +310,14 @@ export default async function ProviderDashboardPage() {
                 {notifications.map((n) => (
                   <li key={n.id} className="px-5 py-3 hover:bg-gray-50">
                     <div className="flex items-start gap-2">
-                      {!n.is_read && (
+                      {n.status === 'pending' && (
                         <span className="mt-1.5 w-1.5 h-1.5 rounded-full bg-green-500 shrink-0" />
                       )}
-                      <div className={n.is_read ? 'ml-3.5' : ''}>
-                        <p className="text-sm font-medium text-gray-800">{n.title}</p>
-                        <p className="text-xs text-gray-500 line-clamp-2">{n.body}</p>
+                      <div className={n.status !== 'pending' ? 'ml-3.5' : ''}>
+                        <p className="text-sm font-medium text-gray-800 capitalize">
+                          {n.template_name.replace(/_/g, ' ')}
+                        </p>
+                        <p className="text-xs text-gray-500 capitalize">via {n.channel} · {n.status}</p>
                         <p className="text-xs text-gray-400 mt-0.5">
                           {format(new Date(n.created_at), 'dd MMM, HH:mm')}
                         </p>

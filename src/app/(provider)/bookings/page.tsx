@@ -72,7 +72,7 @@ export default function ProviderBookingsPage() {
     setPage(1)
   }, [activeTab])
 
-  async function updateStatus(id: string, status: 'confirmed' | 'declined' | 'completed') {
+  async function updateStatus(id: string, status: 'confirmed' | 'cancelled' | 'completed') {
     setActionLoading(id + status)
     const res = await fetch(`/api/bookings/${id}/status`, {
       method: 'PATCH',
@@ -194,11 +194,11 @@ export default function ProviderBookingsPage() {
                       Accept
                     </button>
                     <button
-                      onClick={() => updateStatus(b.id, 'declined')}
+                      onClick={() => updateStatus(b.id, 'cancelled')}
                       disabled={actionLoading !== null}
                       className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-red-50 hover:bg-red-100 text-red-600 border border-red-200 text-xs font-semibold transition-colors disabled:opacity-60"
                     >
-                      {actionLoading === b.id + 'declined' ? (
+                      {actionLoading === b.id + 'cancelled' ? (
                         <Loader2 className="w-3.5 h-3.5 animate-spin" />
                       ) : (
                         <XCircle className="w-3.5 h-3.5" />
