@@ -57,9 +57,10 @@ export default async function ProviderLayout({ children }: { children: React.Rea
     .maybeSingle()
 
   const displayName = profile?.display_name || 'Provider'
-  const sub = Array.isArray(profile?.subscriptions)
+  const rawSub = Array.isArray(profile?.subscriptions)
     ? profile.subscriptions[0]
-    : (profile?.subscriptions as { tier: string; expires_at: string } | null)
+    : profile?.subscriptions
+  const sub = (rawSub as unknown as { tier: string; expires_at: string } | null) ?? null
   const tier = (sub?.tier as string) || 'free'
 
   return (
