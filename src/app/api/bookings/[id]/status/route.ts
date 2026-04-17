@@ -80,7 +80,7 @@ export async function PATCH(
   const { data: provider } = await admin
     .from('provider_profiles')
     .select('id, display_name, user_id')
-    .eq('id', booking.provider_id)
+    .eq('id', booking.provider_id as string)
     .eq('user_id', user.id)
     .single()
 
@@ -134,7 +134,7 @@ export async function PATCH(
     const { data: tourist } = await admin
       .from('users')
       .select('id, phone, preferred_language, full_name')
-      .eq('id', booking.tourist_id)
+      .eq('id', booking.tourist_id as string)
       .single()
 
     const language = tourist?.preferred_language || booking.tourist_language || 'en'
@@ -272,7 +272,7 @@ export async function GET(
   const { data: providerCheck } = await admin
     .from('provider_profiles')
     .select('id')
-    .eq('id', booking.provider_id)
+    .eq('id', booking.provider_id as string)
     .eq('user_id', user.id)
     .single()
 

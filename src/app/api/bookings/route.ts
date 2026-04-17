@@ -162,7 +162,7 @@ export async function POST(request: NextRequest) {
         await admin
           .from('bookings')
           .update({ razorpay_order_id: order.id })
-          .eq('id', booking.id)
+          .eq('id', booking.id as string)
       } catch {
         // If Razorpay fails, we still have the booking — let user retry payment
       }

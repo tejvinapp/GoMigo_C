@@ -61,7 +61,7 @@ export async function POST(request: NextRequest) {
           const { data: tourist } = await admin
             .from('users')
             .select('phone, full_name')
-            .eq('id', booking.tourist_id)
+            .eq('id', booking.tourist_id as string)
             .single()
 
           if (tourist) {
