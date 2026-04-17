@@ -196,7 +196,7 @@ export default async function ProviderDashboardPage() {
                   </thead>
                   <tbody>
                     {recentBookings.map((b) => {
-                      const tourist = b.users as { full_name?: string; phone?: string } | null
+                      const tourist = b.users as unknown as { full_name?: string; phone?: string } | null
                       return (
                         <tr key={b.booking_reference} className="border-b border-gray-50 hover:bg-gray-50">
                           <td className="px-5 py-3 font-mono text-xs text-gray-600">

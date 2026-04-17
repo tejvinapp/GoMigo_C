@@ -56,7 +56,7 @@ export async function GET(request: NextRequest) {
 
   // Privacy: return first name only
   const sanitized = (data || []).map((r) => {
-    const userRow = r.users as { id: string; full_name: string | null } | null
+    const userRow = r.users as unknown as { id: string; full_name: string | null } | null
     const fullName = userRow?.full_name || ''
     const firstName = fullName.split(' ')[0] || 'Traveller'
     return {

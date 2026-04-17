@@ -58,7 +58,7 @@ export default async function BookingPage({ params }: Props) {
   const listing = await getListing(params.listingId)
   if (!listing) notFound()
 
-  const provider = listing.provider_profiles as {
+  const provider = listing.provider_profiles as unknown as {
     display_name: string
     avatar_url: string | null
     avg_rating: number
@@ -66,7 +66,7 @@ export default async function BookingPage({ params }: Props) {
     is_verified: boolean
   } | null
 
-  const dest = listing.destinations as { region_name: string; slug: string } | null
+  const dest = listing.destinations as unknown as { region_name: string; slug: string } | null
 
   const priceLabel =
     listing.listing_type === 'hotel_room' ? '/night' :

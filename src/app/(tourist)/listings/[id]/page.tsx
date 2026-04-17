@@ -77,7 +77,7 @@ async function getReviews(listingId: string) {
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const listing = await getListing(params.id)
   if (!listing) return { title: 'Listing Not Found | GoMiGo' }
-  const dest = listing.destinations as { region_name: string } | null
+  const dest = listing.destinations as unknown as { region_name: string } | null
   return {
     title: `${listing.title}${dest ? ` — ${dest.region_name}` : ''} | GoMiGo`,
     description: listing.description?.slice(0, 160) || '',
@@ -127,7 +127,7 @@ export default async function ListingDetailPage({ params }: Props) {
 
   if (!listing) notFound()
 
-  const provider = listing.provider_profiles as {
+  const provider = listing.provider_profiles as unknown as {
     display_name: string
     avatar_url: string | null
     bio: string | null
@@ -138,7 +138,7 @@ export default async function ListingDetailPage({ params }: Props) {
     vehicle_permit_verified: boolean
   } | null
 
-  const dest = listing.destinations as { region_name: string; slug: string } | null
+  const dest = listing.destinations as unknown as { region_name: string; slug: string } | null
 
   const priceLabel =
     listing.listing_type === 'hotel_room' ? '/night' :
