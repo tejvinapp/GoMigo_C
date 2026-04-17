@@ -206,7 +206,7 @@ export default function KycPage() {
       )
       .order('created_at', { ascending: false })
 
-    setDocs((data as KycDocument[]) ?? [])
+    setDocs((data as unknown as KycDocument[]) ?? [])
     setLoading(false)
   }, [])
 

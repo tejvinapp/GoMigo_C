@@ -153,7 +153,7 @@ export default function ErrorLogsPage() {
       .order('created_at', { ascending: false })
       .limit(200)
 
-    setAllLogs((data as ErrorLog[]) ?? [])
+    setAllLogs((data as unknown as ErrorLog[]) ?? [])
     setLoading(false)
   }, [])
 

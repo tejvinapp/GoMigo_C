@@ -98,7 +98,7 @@ export default function SubscriptionsPage() {
       )
       .order('current_period_end', { ascending: true, nullsFirst: false })
 
-    setSubs((data as SubscriptionRow[]) ?? [])
+    setSubs((data as unknown as SubscriptionRow[]) ?? [])
     setLoading(false)
   }, [])
 
