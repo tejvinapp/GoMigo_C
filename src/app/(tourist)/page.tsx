@@ -1,4 +1,5 @@
 import type { Metadata } from 'next'
+import React from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import {
@@ -261,11 +262,7 @@ export default async function HomePage() {
                 className="group bg-white rounded-2xl p-6 border border-gray-200 hover:border-green-200 hover:shadow-md transition-all"
               >
                 <div className={`w-12 h-12 rounded-xl ${service.color} flex items-center justify-center mb-4`}>
-                  {typeof service.icon === 'function' ? (
-                    <service.icon />
-                  ) : (
-                    <service.icon className="w-6 h-6" />
-                  )}
+                  {(() => { const Icon = service.icon as React.ComponentType<{className?: string}>; return <Icon className="w-6 h-6" /> })()}
                 </div>
                 <div className="text-xs font-medium text-green-600 mb-1">{service.count}</div>
                 <h3 className="text-lg font-bold text-gray-900 mb-2 group-hover:text-green-700 transition-colors">
