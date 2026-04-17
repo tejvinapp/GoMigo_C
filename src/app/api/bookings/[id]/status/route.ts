@@ -15,6 +15,23 @@ interface ProviderRow {
   user_id: string
 }
 
+interface TouristRow {
+  id: string
+  phone: string | null
+  preferred_language: string | null
+  full_name: string | null
+}
+
+interface BookingStatusRow {
+  id: string
+  booking_reference: string
+  status: string
+  payment_status: string | null
+  updated_at: string | null
+  tourist_id: string
+  provider_id: string
+}
+
 interface BookingRow {
   id: string
   booking_reference: string
@@ -156,11 +173,12 @@ export async function PATCH(
     }
 
     // Fetch tourist info for notification
-    const { data: tourist } = await admin
+    const { data: rawTourist } = await admin
       .from('users')
       .select('id, phone, preferred_language, full_name')
       .eq('id', booking.tourist_id)
       .single()
+    const tourist = rawTourist as unknown as TouristRow | null
 
     const language = tourist?.preferred_language || booking.tourist_language || 'en'
 
@@ -279,11 +297,12 @@ export async function GET(
   }
 
   const admin = createAdminClient()
-  const { data: booking, error } = await admin
+  const { data: rawStatusBooking, error } = await admin
     .from('bookings')
     .select('id, booking_reference, status, payment_status, updated_at, tourist_id, provider_id')
     .eq('id', params.id)
     .single()
+  const booking = rawStatusBooking as unknown as BookingStatusRow | null
 
   if (error || !booking) {
     return NextResponse.json(
