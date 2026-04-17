@@ -178,7 +178,7 @@ export default function NewListingPage() {
   function toggleLanguage(lang: string) {
     const current = (watch('languages' as keyof ListingFormData) as string[] | undefined) || []
     const next = current.includes(lang) ? current.filter((l) => l !== lang) : [...current, lang]
-    setValue('languages' as keyof ListingFormData, next as ListingFormData[keyof ListingFormData])
+    setValue('languages' as keyof ListingFormData, next as unknown as ListingFormData[keyof ListingFormData])
   }
 
   function toggleAmenity(amenity: string) {
@@ -186,7 +186,7 @@ export default function NewListingPage() {
     const next = current.includes(amenity)
       ? current.filter((a) => a !== amenity)
       : [...current, amenity]
-    setValue('amenities' as keyof ListingFormData, next as ListingFormData[keyof ListingFormData])
+    setValue('amenities' as keyof ListingFormData, next as unknown as ListingFormData[keyof ListingFormData])
   }
 
   async function onSubmit(data: ListingFormData) {
@@ -322,7 +322,7 @@ export default function NewListingPage() {
                 onClick={() =>
                   setValue(
                     'isAC' as keyof ListingFormData,
-                    !watch('isAC' as keyof ListingFormData) as ListingFormData[keyof ListingFormData]
+                    !watch('isAC' as keyof ListingFormData) as unknown as ListingFormData[keyof ListingFormData]
                   )
                 }
                 className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${
