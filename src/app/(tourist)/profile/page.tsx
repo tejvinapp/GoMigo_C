@@ -44,9 +44,7 @@ async function getProfileData(userId: string) {
       phone,
       preferred_language,
       referral_code,
-      referral_count,
-      avatar_url,
-      has_ai_key
+      avatar_url
     `)
     .eq('id', userId)
     .single()
@@ -85,9 +83,9 @@ export default async function ProfilePage() {
   const phone = profile?.phone || ''
   const preferredLanguage = profile?.preferred_language || 'en'
   const referralCode = profile?.referral_code || ''
-  const referralCount = profile?.referral_count || 0
-  const hasAIKey = profile?.has_ai_key || false
-  const avatarUrl = profile?.avatar_url || null
+  const referralCount = 0
+  const hasAIKey = false
+  const avatarUrl = (profile as unknown as { avatar_url?: string } | null)?.avatar_url || null
 
   const currentLangLabel =
     LANGUAGES.find((l) => l.code === preferredLanguage)?.nativeLabel || 'English'

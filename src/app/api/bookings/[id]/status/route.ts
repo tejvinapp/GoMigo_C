@@ -256,7 +256,7 @@ export async function PATCH(
             payment_id: booking.razorpay_payment_id,
             error: String(refundErr),
           },
-          auto_fixed: false,
+          auto_fix_attempted: false,
           created_at: new Date().toISOString(),
         })
       }
