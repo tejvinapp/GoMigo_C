@@ -9,6 +9,23 @@ import { z } from 'zod'
 
 export const dynamic = 'force-dynamic'
 
+interface BookingRow {
+  id: string
+  booking_reference: string
+  status: string
+  tourist_id: string
+  provider_id: string
+  tourist_language: string | null
+  total_paise: number
+  payment_method: string | null
+  payment_status: string | null
+  razorpay_payment_id: string | null
+  razorpay_order_id: string | null
+  pickup_name: string | null
+  tour_date: string | null
+  checkin_date: string | null
+}
+
 const UpdateStatusSchema = z.object({
   status: z.enum(['confirmed', 'cancelled', 'completed']),
   reason: z.string().max(500).optional(),
@@ -58,7 +75,7 @@ export async function PATCH(
   const admin = createAdminClient()
 
   // Fetch booking details
-  const { data: booking, error: bookingError } = await admin
+  const { data: rawBooking, error: bookingError } = await admin
     .from('bookings')
     .select(`
       id, booking_reference, status, tourist_id, provider_id,
@@ -68,6 +85,7 @@ export async function PATCH(
     `)
     .eq('id', bookingId)
     .single()
+  const booking = rawBooking as unknown as BookingRow | null
 
   if (bookingError || !booking) {
     return NextResponse.json(
@@ -80,7 +98,7 @@ export async function PATCH(
   const { data: provider } = await admin
     .from('provider_profiles')
     .select('id, display_name, user_id')
-    .eq('id', booking.provider_id as string)
+    .eq('id', booking.provider_id)
     .eq('user_id', user.id)
     .single()
 
@@ -134,7 +152,7 @@ export async function PATCH(
     const { data: tourist } = await admin
       .from('users')
       .select('id, phone, preferred_language, full_name')
-      .eq('id', booking.tourist_id as string)
+      .eq('id', booking.tourist_id)
       .single()
 
     const language = tourist?.preferred_language || booking.tourist_language || 'en'
@@ -272,7 +290,7 @@ export async function GET(
   const { data: providerCheck } = await admin
     .from('provider_profiles')
     .select('id')
-    .eq('id', booking.provider_id as string)
+    .eq('id', booking.provider_id)
     .eq('user_id', user.id)
     .single()
 
