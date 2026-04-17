@@ -241,7 +241,7 @@ export async function PATCH(
           .from('bookings')
           .update({
             refund_status: 'refund_initiated',
-            refund_id: refund.id,
+            refund_razorpay_id: refund.id,
           })
           .eq('id', bookingId)
       } catch (refundErr) {

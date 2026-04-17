@@ -361,6 +361,7 @@ export const bookings = pgTable('bookings', {
   // Timestamps
   trip_started_at: timestamp('trip_started_at', { withTimezone: true }),
   trip_completed_at: timestamp('trip_completed_at', { withTimezone: true }),
+  completed_at: timestamp('completed_at', { withTimezone: true }),
   // Cancellation
   cancellation_reason: text('cancellation_reason'),
   cancelled_by: text('cancelled_by'),

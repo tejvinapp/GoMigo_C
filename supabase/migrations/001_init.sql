@@ -313,7 +313,7 @@ CREATE TABLE bookings (
   booking_type                TEXT NOT NULL CHECK (booking_type IN ('cab','auto','hotel','tour')),
   status                      TEXT NOT NULL DEFAULT 'pending' CHECK (status IN (
     'pending','confirmed','driver_assigned','in_progress',
-    'completed','cancelled','disputed','refunded'
+    'completed','cancelled','disputed','refunded','payment_failed'
   )),
   -- Location
   pickup_lat                  DOUBLE PRECISION,
@@ -349,13 +349,14 @@ CREATE TABLE bookings (
   -- Timestamps
   trip_started_at             TIMESTAMPTZ,
   trip_completed_at           TIMESTAMPTZ,
+  completed_at                TIMESTAMPTZ,
   -- Cancellation
   cancellation_reason         TEXT,
   cancelled_by                TEXT CHECK (cancelled_by IN ('tourist','provider','admin','system')),
   cancelled_at                TIMESTAMPTZ,
   -- Refund
   refund_amount_paise         INTEGER DEFAULT 0 CHECK (refund_amount_paise >= 0),
-  refund_status               TEXT CHECK (refund_status IN ('pending','processing','completed','failed')),
+  refund_status               TEXT CHECK (refund_status IN ('pending','processing','completed','failed','refund_initiated')),
   refund_razorpay_id          TEXT,
   -- Language at booking time (for notifications)
   tourist_language            TEXT NOT NULL DEFAULT 'en'
