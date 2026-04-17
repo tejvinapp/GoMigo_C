@@ -8,7 +8,17 @@ interface Props {
   params: { slug: string }
 }
 
-async function getDestination(slug: string) {
+interface Destination {
+  id: string
+  slug: string
+  region_name: string
+  description_en: string | null
+  seo_title_en: string | null
+  meta_description_en: string | null
+  sub_destinations: string[] | null
+}
+
+async function getDestination(slug: string): Promise<Destination | null> {
   const admin = createAdminClient()
   const { data } = await admin
     .from('destinations')
@@ -16,7 +26,7 @@ async function getDestination(slug: string) {
     .eq('slug', slug)
     .eq('is_active', true)
     .single()
-  return data
+  return data as unknown as Destination | null
 }
 
 async function getListingCounts(destinationId: string) {
