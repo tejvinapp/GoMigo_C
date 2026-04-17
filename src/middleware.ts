@@ -18,6 +18,8 @@ import { nanoid } from 'nanoid'
 // Routes that require an authenticated session
 // ---------------------------------------------------------------------------
 const PROTECTED_PATH_PREFIXES = ['/provider', '/admin']
+// Public paths that start with a protected prefix but should be allowed without auth
+const PROTECTED_PATH_EXCEPTIONS = ['/provider/register', '/provider/how-it-works']
 
 // ---------------------------------------------------------------------------
 // Simple in-memory rate limit (per-IP, 300 req/min)
@@ -89,9 +91,9 @@ export async function middleware(request: NextRequest) {
   } = await supabase.auth.getUser()
 
   // 3. Protected route guard
-  const isProtected = PROTECTED_PATH_PREFIXES.some((prefix) =>
-    pathname.startsWith(prefix)
-  )
+  const isProtected =
+    PROTECTED_PATH_PREFIXES.some((prefix) => pathname.startsWith(prefix)) &&
+    !PROTECTED_PATH_EXCEPTIONS.some((exc) => pathname.startsWith(exc))
 
   if (isProtected && !user) {
     const loginUrl = new URL('/login', request.url)
