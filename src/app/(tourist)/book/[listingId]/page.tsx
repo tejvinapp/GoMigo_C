@@ -120,9 +120,6 @@ export default async function BookingPage({ params }: Props) {
               listingId={listing.id}
               listingType={(listing.listing_type === 'hotel_room' ? 'hotel' : listing.listing_type === 'tour' ? 'guide' : listing.listing_type) as 'cab' | 'auto' | 'hotel' | 'guide'}
               basePricePaise={listing.base_price_paise as number}
-              demandMultiplier={listing.demand_multiplier as number}
-              platformFeePercent={(listing.platform_fee_percent as number) ?? 10}
-              isInstantBook={listing.is_instant_book as boolean}
             />
           </div>
 

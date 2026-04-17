@@ -15,7 +15,7 @@ export interface BookingFormProps {
   listingId: string
   listingType: 'cab' | 'auto' | 'hotel' | 'guide'
   basePricePaise: number
-  onSuccess: (bookingId: string) => void
+  onSuccess?: (bookingId: string) => void
 }
 
 // ---------------------------------------------------------------------------
@@ -118,7 +118,7 @@ function HotelForm({
       throw new Error(err.message ?? 'Booking failed')
     }
     const data = await res.json()
-    onSuccess(data.data?.bookingId ?? data.bookingId)
+    if (onSuccess) onSuccess(data.data?.bookingId ?? data.bookingId)
   }
 
   return (
@@ -221,7 +221,7 @@ function CabAutoForm({
       throw new Error(err.message ?? 'Booking failed')
     }
     const data = await res.json()
-    onSuccess(data.data?.bookingId ?? data.bookingId)
+    if (onSuccess) onSuccess(data.data?.bookingId ?? data.bookingId)
   }
 
   return (
@@ -337,7 +337,7 @@ function GuideForm({
       throw new Error(err.message ?? 'Booking failed')
     }
     const data = await res.json()
-    onSuccess(data.data?.bookingId ?? data.bookingId)
+    if (onSuccess) onSuccess(data.data?.bookingId ?? data.bookingId)
   }
 
   return (
