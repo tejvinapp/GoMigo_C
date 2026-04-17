@@ -9,6 +9,12 @@ import { z } from 'zod'
 
 export const dynamic = 'force-dynamic'
 
+interface ProviderRow {
+  id: string
+  display_name: string | null
+  user_id: string
+}
+
 interface BookingRow {
   id: string
   booking_reference: string
@@ -95,12 +101,13 @@ export async function PATCH(
   }
 
   // Verify authenticated user is the provider for this booking
-  const { data: provider } = await admin
+  const { data: rawProvider } = await admin
     .from('provider_profiles')
     .select('id, display_name, user_id')
     .eq('id', booking.provider_id)
     .eq('user_id', user.id)
     .single()
+  const provider = rawProvider as unknown as ProviderRow | null
 
   if (!provider) {
     return NextResponse.json(
