@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { createClient } from '@/src/lib/supabase/server'
-import { saveUserAIKey } from '@/src/lib/ai/bridge'
+import { createClient } from '@/lib/supabase/server'
+import { saveUserAIKey } from '@/lib/ai/bridge'
 import { z } from 'zod'
 
 const ValidateKeySchema = z.object({
@@ -28,10 +28,10 @@ export async function POST(request: NextRequest) {
   let valid = false
   try {
     if (provider === 'gemini') {
-      const { validateGeminiKey } = await import('@/src/lib/ai/providers/gemini')
+      const { validateGeminiKey } = await import('@/lib/ai/providers/gemini')
       valid = await validateGeminiKey(apiKey)
     } else if (provider === 'groq') {
-      const { validateGroqKey } = await import('@/src/lib/ai/providers/groq')
+      const { validateGroqKey } = await import('@/lib/ai/providers/groq')
       valid = await validateGroqKey(apiKey)
     } else {
       // For other providers, do a basic format check

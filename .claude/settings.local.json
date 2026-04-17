@@ -49,7 +49,12 @@
       "Bash(powershell.exe -Command \":*)",
       "Bash(powershell.exe -Command \"Get-ChildItem ''D:\\\\GoMiGo\\\\src\\\\app\\\\\\(admin\\)'' -Recurse | Select-Object FullName\")",
       "Bash(git -C \"D:\\\\GoMiGo\" add -A)",
-      "Bash(git -C \"D:\\\\GoMiGo\" commit -m \"fix: move admin pages to /admin/* to resolve route group conflict:*)"
+      "Bash(git -C \"D:\\\\GoMiGo\" commit -m \"fix: move admin pages to /admin/* to resolve route group conflict:*)",
+      "Bash(powershell.exe -Command \"Get-ChildItem ''D:\\\\GoMiGo\\\\src\\\\lib'' -Recurse | Select-Object FullName\")",
+      "Bash(git -C \"D:\\\\GoMiGo\" add tsconfig.json next.config.js)",
+      "Bash(git -C \"D:\\\\GoMiGo\" commit -m \"fix: correct @/* path alias to src/* and remove invalid redirect\")",
+      "Bash(powershell.exe -Command \"Get-ChildItem ''D:\\\\GoMiGo\\\\src'' -Recurse -Include ''*.ts'',''*.tsx'' | Select-String ''@/src/'' | Select-Object -ExpandProperty Path | Sort-Object -Unique\")",
+      "Bash(git -C \"D:\\\\GoMiGo\" commit -m \"fix: replace all @/src/* imports with @/* across all source files\")"
     ]
   }
 }

@@ -1,5 +1,5 @@
 // LibreTranslate client — self-hosted, free, batch translation for listings
-import { getSetting } from '@/src/lib/settings'
+import { getSetting } from '@/lib/settings'
 
 export type SupportedLanguage = 'en' | 'ta' | 'te' | 'kn' | 'ml' | 'hi' | 'mr' | 'or'
 

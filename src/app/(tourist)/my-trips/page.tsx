@@ -8,7 +8,7 @@ import {
   Star, AlertTriangle, CheckCircle2, XCircle, Loader2, Package,
   ArrowRight, RefreshCw,
 } from 'lucide-react'
-import { formatINR } from '@/src/lib/utils/currency'
+import { formatINR } from '@/lib/utils/currency'
 import { format, parseISO, differenceInHours } from 'date-fns'
 
 type TabKey = 'upcoming' | 'past' | 'cancelled'

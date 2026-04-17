@@ -1,6 +1,6 @@
 // Auto-fix functions — run automatically when certain errors occur
 // Each function must be idempotent (safe to run multiple times)
-import { createAdminClient } from '@/src/lib/supabase/admin'
+import { createAdminClient } from '@/lib/supabase/admin'
 
 export type AutoFixResult = {
   success: boolean

@@ -1,9 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { verifyWebhookSignature, createRefund } from '@/src/lib/payments/razorpay'
-import { createAdminClient } from '@/src/lib/supabase/admin'
-import { notifyError } from '@/src/lib/errors/notify'
-import { AppError } from '@/src/lib/errors/AppError'
-import { sendWhatsApp } from '@/src/lib/notifications/whatsapp'
+import { verifyWebhookSignature, createRefund } from '@/lib/payments/razorpay'
+import { createAdminClient } from '@/lib/supabase/admin'
+import { notifyError } from '@/lib/errors/notify'
+import { AppError } from '@/lib/errors/AppError'
+import { sendWhatsApp } from '@/lib/notifications/whatsapp'
 
 export const dynamic = 'force-dynamic'
 

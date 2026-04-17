@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-import { AppError } from '@/src/lib/errors/AppError'
+import { AppError } from '@/lib/errors/AppError'
 
 interface Props {
   errorCode?: string

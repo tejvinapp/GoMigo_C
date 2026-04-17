@@ -1,7 +1,7 @@
 // BYOAI Bridge — retrieve user's AI key from Vault and route to correct provider
 // The AI key NEVER leaves this server-side module
-import { createAdminClient } from '@/src/lib/supabase/admin'
-import { createAdminClient as getAdmin } from '@/src/lib/supabase/admin'
+import { createAdminClient } from '@/lib/supabase/admin'
+import { createAdminClient as getAdmin } from '@/lib/supabase/admin'
 
 export type AIProvider = 'gemini' | 'groq' | 'deepseek' | 'cohere' | 'huggingface'
 
@@ -35,7 +35,7 @@ async function getUserAIKey(userId: string): Promise<{ provider: AIProvider; key
   if (!data?.ai_provider || !data?.ai_key_vault_id) return null
 
   // Decrypt the key — stored encrypted in Supabase Vault
-  const { decrypt } = await import('@/src/lib/utils/crypto')
+  const { decrypt } = await import('@/lib/utils/crypto')
   try {
     const key = await decrypt(data.ai_key_vault_id)
     return { provider: data.ai_provider as AIProvider, key }
@@ -128,7 +128,7 @@ export async function callAI(request: AIRequest): Promise<AIResponse> {
  * Save a user's AI key securely (encrypted, stored in DB)
  */
 export async function saveUserAIKey(userId: string, provider: AIProvider, plainKey: string): Promise<void> {
-  const { encrypt } = await import('@/src/lib/utils/crypto')
+  const { encrypt } = await import('@/lib/utils/crypto')
   const encryptedKey = await encrypt(plainKey)
 
   const supabase = getAdmin()

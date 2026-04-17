@@ -1,7 +1,7 @@
 import { redirect } from 'next/navigation'
 import Link from 'next/link'
-import { createClient } from '@/src/lib/supabase/server'
-import { formatINR } from '@/src/lib/utils/currency'
+import { createClient } from '@/lib/supabase/server'
+import { formatINR } from '@/lib/utils/currency'
 import { format } from 'date-fns'
 import {
   CalendarDays,

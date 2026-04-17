@@ -1,5 +1,5 @@
 // MSG91 SMS — fallback when WhatsApp fails
-import { getSetting } from '@/src/lib/settings'
+import { getSetting } from '@/lib/settings'
 
 export async function sendSMS(params: {
   to: string      // E.164: +919876543210

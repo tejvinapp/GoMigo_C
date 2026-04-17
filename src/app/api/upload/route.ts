@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { createClient } from '@/src/lib/supabase/server'
-import { upload } from '@/src/lib/storage/index'
-import { AppError } from '@/src/lib/errors/AppError'
+import { createClient } from '@/lib/supabase/server'
+import { upload } from '@/lib/storage/index'
+import { AppError } from '@/lib/errors/AppError'
 
 const ALLOWED_TYPES = ['image/jpeg', 'image/png', 'image/webp', 'application/pdf']
 const MAX_SIZE_BYTES = 5 * 1024 * 1024 // 5MB

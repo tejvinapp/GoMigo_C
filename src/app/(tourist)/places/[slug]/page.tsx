@@ -2,7 +2,7 @@ import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 import Link from 'next/link'
 import { MapPin, Car, Hotel, Compass, Star, ArrowRight, Shield } from 'lucide-react'
-import { createAdminClient } from '@/src/lib/supabase/admin'
+import { createAdminClient } from '@/lib/supabase/admin'
 
 interface Props {
   params: { slug: string }

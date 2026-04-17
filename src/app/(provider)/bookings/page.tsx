@@ -1,7 +1,7 @@
 'use client'
 
 import { useEffect, useState, useCallback } from 'react'
-import { formatINR } from '@/src/lib/utils/currency'
+import { formatINR } from '@/lib/utils/currency'
 import { format } from 'date-fns'
 import { CheckCircle2, XCircle, Check, Loader2, ChevronLeft, ChevronRight } from 'lucide-react'
 

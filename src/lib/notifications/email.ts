@@ -1,7 +1,7 @@
 // Email notification with template rendering
-import { sendEmail } from '@/src/lib/email/index'
-import { formatINR } from '@/src/lib/utils/currency'
-import { formatDateTimeIST } from '@/src/lib/utils/dates'
+import { sendEmail } from '@/lib/email/index'
+import { formatINR } from '@/lib/utils/currency'
+import { formatDateTimeIST } from '@/lib/utils/dates'
 
 export async function sendBookingConfirmationEmail(params: {
   touristEmail: string

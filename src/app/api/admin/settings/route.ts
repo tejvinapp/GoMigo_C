@@ -1,8 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { createClient } from '@/src/lib/supabase/server'
-import { createAdminClient } from '@/src/lib/supabase/admin'
-import { getSetting, setSetting } from '@/src/lib/settings'
-import { AppError } from '@/src/lib/errors/AppError'
+import { createClient } from '@/lib/supabase/server'
+import { createAdminClient } from '@/lib/supabase/admin'
+import { getSetting, setSetting } from '@/lib/settings'
+import { AppError } from '@/lib/errors/AppError'
 import { z } from 'zod'
 
 export const dynamic = 'force-dynamic'

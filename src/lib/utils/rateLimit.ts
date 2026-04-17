@@ -1,5 +1,5 @@
 // PostgreSQL-based rate limiter — works on any hosting platform (no Redis needed)
-import { createAdminClient } from '@/src/lib/supabase/admin'
+import { createAdminClient } from '@/lib/supabase/admin'
 
 interface RateLimitConfig {
   maxRequests: number

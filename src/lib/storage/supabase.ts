@@ -1,4 +1,4 @@
-import { createAdminClient } from '@/src/lib/supabase/admin'
+import { createAdminClient } from '@/lib/supabase/admin'
 import type { StorageProvider } from './index'
 
 export class SupabaseStorageProvider implements StorageProvider {

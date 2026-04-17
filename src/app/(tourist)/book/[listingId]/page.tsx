@@ -2,9 +2,9 @@ import type { Metadata } from 'next'
 import { notFound, redirect } from 'next/navigation'
 import Link from 'next/link'
 import { Shield, Star, ChevronRight, CheckCircle2, ArrowLeft } from 'lucide-react'
-import { createClient } from '@/src/lib/supabase/server'
-import { formatINR } from '@/src/lib/utils/currency'
-import BookingForm from '@/src/components/BookingForm'
+import { createClient } from '@/lib/supabase/server'
+import { formatINR } from '@/lib/utils/currency'
+import BookingForm from '@/components/BookingForm'
 
 export const metadata: Metadata = {
   title: 'Complete Your Booking | GoMiGo',

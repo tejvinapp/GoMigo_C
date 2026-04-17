@@ -1,6 +1,6 @@
 // Razorpay integration — orders, subscriptions, refunds, webhook verification
-import { getSetting } from '@/src/lib/settings'
-import { AppError } from '@/src/lib/errors/AppError'
+import { getSetting } from '@/lib/settings'
+import { AppError } from '@/lib/errors/AppError'
 import crypto from 'crypto'
 
 interface RazorpayOrder {

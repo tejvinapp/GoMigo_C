@@ -1,7 +1,7 @@
 // Platform Settings — reads from DB, not from env vars
 // All integrations (Razorpay, WhatsApp, etc.) configured by admin via UI
 
-import { createAdminClient } from '@/src/lib/supabase/admin'
+import { createAdminClient } from '@/lib/supabase/admin'
 
 interface Setting {
   key: string
@@ -43,7 +43,7 @@ export async function getSetting(key: string): Promise<string | null> {
   // Decrypt sensitive values
   let value = data.value
   if (data.is_sensitive && value && value.startsWith('enc:')) {
-    const { decrypt } = await import('@/src/lib/utils/crypto')
+    const { decrypt } = await import('@/lib/utils/crypto')
     value = await decrypt(value.slice(4))
   }
 
@@ -71,7 +71,7 @@ export async function setSetting(
 
   let storedValue = value
   if (existing?.is_sensitive) {
-    const { encrypt } = await import('@/src/lib/utils/crypto')
+    const { encrypt } = await import('@/lib/utils/crypto')
     storedValue = 'enc:' + (await encrypt(value))
   }
 

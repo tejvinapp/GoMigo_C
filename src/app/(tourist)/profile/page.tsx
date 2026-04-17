@@ -6,9 +6,9 @@ import {
   MapPin, CreditCard, Globe, Phone, Mail, User,
   ExternalLink,
 } from 'lucide-react'
-import { createClient } from '@/src/lib/supabase/server'
-import { formatINR } from '@/src/lib/utils/currency'
-import ProfileClient from '@/src/components/ProfileClient'
+import { createClient } from '@/lib/supabase/server'
+import { formatINR } from '@/lib/utils/currency'
+import ProfileClient from '@/components/ProfileClient'
 
 export const metadata: Metadata = {
   title: 'My Profile | GoMiGo',

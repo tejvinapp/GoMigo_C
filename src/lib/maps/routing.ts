@@ -1,5 +1,5 @@
 // Route calculation using OpenRouteService (free) or OSRM
-import { getSetting } from '@/src/lib/settings'
+import { getSetting } from '@/lib/settings'
 
 export interface RouteResult {
   distanceKm: number

@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { createClient } from '@/src/lib/supabase/server'
-import { callAI } from '@/src/lib/ai/bridge'
-import { checkRateLimit } from '@/src/lib/utils/rateLimit'
+import { createClient } from '@/lib/supabase/server'
+import { callAI } from '@/lib/ai/bridge'
+import { checkRateLimit } from '@/lib/utils/rateLimit'
 import { z } from 'zod'
 
 const AIRequestSchema = z.object({

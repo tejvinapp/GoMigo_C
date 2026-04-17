@@ -1,5 +1,5 @@
 // Admin error notification — sends email + writes to error_logs table
-import { createAdminClient } from '@/src/lib/supabase/admin'
+import { createAdminClient } from '@/lib/supabase/admin'
 import type { AppError } from './AppError'
 
 interface ErrorContext {
@@ -56,7 +56,7 @@ export async function notifyError(
   // 2. Email admin for high/critical errors
   if (severity === 'high' || severity === 'critical') {
     try {
-      const { sendAdminAlert } = await import('@/src/lib/email/index')
+      const { sendAdminAlert } = await import('@/lib/email/index')
       const subject = `[${severity.toUpperCase()}] ${code} — GoMiGo Production`
       const html = buildAdminEmailHTML({ code, adminMessage, context, severity, autoFixable, logId, stack: error.stack })
       await sendAdminAlert(subject, html)

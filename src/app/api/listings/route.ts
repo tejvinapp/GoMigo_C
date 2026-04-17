@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { createAdminClient } from '@/src/lib/supabase/admin'
-import { applySeasonalPricing } from '@/src/lib/utils/seasonal'
-import { applyDemandMultiplier } from '@/src/lib/utils/currency'
+import { createAdminClient } from '@/lib/supabase/admin'
+import { applySeasonalPricing } from '@/lib/utils/seasonal'
+import { applyDemandMultiplier } from '@/lib/utils/currency'
 
 export const dynamic = 'force-dynamic'
 

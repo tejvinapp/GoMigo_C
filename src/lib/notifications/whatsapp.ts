@@ -1,6 +1,6 @@
 // WhatsApp notification — Wati.io primary, Meta Cloud API fallback
-import { getSetting } from '@/src/lib/settings'
-import { createAdminClient } from '@/src/lib/supabase/admin'
+import { getSetting } from '@/lib/settings'
+import { createAdminClient } from '@/lib/supabase/admin'
 
 export interface WhatsAppMessage {
   to: string           // E.164 format: +919876543210

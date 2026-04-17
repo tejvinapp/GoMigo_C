@@ -7,11 +7,11 @@ import {
   Languages, TrendingUp, ChevronRight, Clock, Users, Calendar,
   ArrowRight,
 } from 'lucide-react'
-import { createClient } from '@/src/lib/supabase/server'
-import { formatINR } from '@/src/lib/utils/currency'
+import { createClient } from '@/lib/supabase/server'
+import { formatINR } from '@/lib/utils/currency'
 import { format } from 'date-fns'
 
-const ListingMap = dynamic(() => import('@/src/components/ListingMap'), { ssr: false })
+const ListingMap = dynamic(() => import('@/components/ListingMap'), { ssr: false })
 
 interface Props {
   params: { id: string }
